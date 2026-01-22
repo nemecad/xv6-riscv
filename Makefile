@@ -6,7 +6,6 @@ OBJS = \
   $K/start.o \
   $K/console.o \
   $K/printf.o \
-  $K/uart.o \
   $K/kalloc.o \
   $K/spinlock.o \
   $K/string.o \
@@ -29,6 +28,12 @@ OBJS = \
   $K/kernelvec.o \
   $K/plic.o \
   $K/virtio_disk.o
+
+#OBJS += \
+#  $K/uart.o \
+
+OBJS += \
+  $K/uart_qtrvsim.o \
 
 # riscv64-unknown-elf- or riscv64-linux-gnu-
 # perhaps in /opt/riscv/bin
@@ -62,7 +67,7 @@ OBJCOPY = $(TOOLPREFIX)objcopy
 OBJDUMP = $(TOOLPREFIX)objdump
 
 CFLAGS = -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2
-CFLAGS += -march=rv64gc
+CFLAGS += -march=rv64ima_zicsr -mabi=lp64
 CFLAGS += -MD
 CFLAGS += -mcmodel=medany
 CFLAGS += -ffreestanding
@@ -92,7 +97,7 @@ $K/kernel: $(OBJS) $K/kernel.ld
 	$(OBJDUMP) -t $K/kernel | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$$/d' > $K/kernel.sym
 
 $K/%.o: $K/%.S
-	$(CC) -march=rv64gc -g -c -o $@ $<
+	$(CC) -march=rv64ima_zicsr -mabi=lp64 -g -c -o $@ $<
 
 tags: $(OBJS)
 	etags kernel/*.S kernel/*.c
