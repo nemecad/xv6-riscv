@@ -4,6 +4,8 @@
 #include "riscv.h"
 #include "defs.h"
 
+#define SIE_UART (1L << 16)
+
 void main();
 void timerinit();
 
@@ -29,8 +31,8 @@ start()
 
   // delegate all interrupts and exceptions to supervisor mode.
   w_medeleg(0xffff);
-  w_mideleg(0xffff);
-  w_sie(r_sie() | SIE_SEIE | SIE_STIE);
+  w_mideleg(0xffff | (1L << 16));
+  w_sie(r_sie() | SIE_SEIE | SIE_STIE | SIE_UART);
 
   // configure Physical Memory Protection to give supervisor mode
   // access to all of physical memory.
