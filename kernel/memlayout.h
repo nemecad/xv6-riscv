@@ -17,9 +17,11 @@
 // end -- start of kernel page allocation area
 // PHYSTOP -- end RAM used by the kernel
 
-// qemu puts UART registers here in physical memory.
-#define UART0 0x10000000L
 #define UART0_IRQ 10
+// qtrvsim puts UART registers here in physical memory.
+#define UART0 SERIAL_PORT_BASE
+#define UART0_RX_IRQ 16
+#define UART0_TX_IRQ 17
 
 // virtio mmio interface
 #define VIRTIO0 0x10001000

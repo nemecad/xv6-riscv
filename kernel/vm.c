@@ -7,6 +7,7 @@
 #include "spinlock.h"
 #include "proc.h"
 #include "fs.h"
+#include "uart_qtrvsim.h"
 
 /*
  * the kernel's page table.
@@ -26,8 +27,9 @@ kvmmake(void)
   kpgtbl = (pagetable_t) kalloc();
   memset(kpgtbl, 0, PGSIZE);
 
-  // uart registers
-  kvmmap(kpgtbl, UART0, UART0, PGSIZE, PTE_R | PTE_W);
+  // Map the UART (Serial Port)
+  // This mapping covers 0xffffc000 through 0xffffcfff.
+  kvmmap(kpgtbl, SERIAL_PORT_BASE, SERIAL_PORT_BASE, PGSIZE, PTE_R | PTE_W);
 
   // virtio mmio disk interface
   kvmmap(kpgtbl, VIRTIO0, VIRTIO0, PGSIZE, PTE_R | PTE_W);
