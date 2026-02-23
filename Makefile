@@ -27,7 +27,8 @@ OBJS = \
   $K/sysfile.o \
   $K/kernelvec.o \
   $K/plic.o \
-  $K/virtio_disk.o
+  $K/virtio_ramdisk.o \
+  $K/fs_img.o
 
 #OBJS += \
 #  $K/uart.o \
@@ -153,6 +154,10 @@ UPROGS=\
 
 fs.img: mkfs/mkfs README $(UPROGS)
 	mkfs/mkfs fs.img README $(UPROGS)
+kernel/fs_img.c: fs.img
+	xxd -i fs.img | \
+	  sed 's/unsigned char fs_img\[\]/unsigned char fs_img[] __attribute__((section(".ramdisk")))/' \
+	  > kernel/fs_img.c
 
 -include kernel/*.d user/*.d
 

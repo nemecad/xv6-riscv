@@ -41,5 +41,13 @@ SECTIONS
     *(.bss .bss.*)
   }
 
+  .ramdisk : {
+    . = ALIGN(4096);
+    PROVIDE(ramdisk_start = .);
+    *(.ramdisk)
+    . = ALIGN(4096);
+    PROVIDE(ramdisk_end = .);
+  }
+
   PROVIDE(end = .);
 }
