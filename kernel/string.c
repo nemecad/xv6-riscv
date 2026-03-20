@@ -11,6 +11,19 @@ memset(void *dst, int c, uint n)
   return dst;
 }
 
+
+void*
+memset_sparse(void *dst, int c, uint n, uint step)
+{
+  int *cdst = (int *) dst;
+  int i;
+  for(i = 0; i < n/sizeof(int); i+=step){
+    cdst[i] = c;
+  }
+  return dst;
+}
+
+
 int
 memcmp(const void *v1, const void *v2, uint n)
 {
