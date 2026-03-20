@@ -457,6 +457,7 @@ scheduler(void)
     }
     if(found == 0) {
       // nothing to run; stop running on this core until an interrupt.
+      printf("Instruction wfi\n");
       asm volatile("wfi");
     }
   }
@@ -529,6 +530,8 @@ forkret(void)
       panic("exec");
     }
   }
+  
+  printf("Forkret - prepare for return\n");
 
   // return to user space, mimicing usertrap()'s return.
   prepare_return();
